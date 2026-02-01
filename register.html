@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro | IssaDilly</title>
+    <link rel="stylesheet" href="/src/style.css">
+    <style>
+        .login-wrapper {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--bg-creme), var(--secondary-pastel));
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 400px;
+            padding: 3rem;
+            border-radius: 40px;
+            text-align: center;
+        }
+
+        .login-card h1 {
+            margin-bottom: 2rem;
+            color: var(--accent-gold);
+        }
+
+        .login-form .form-group {
+            text-align: left;
+        }
+
+        .login-form input {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 15px;
+            border: 1px solid var(--glass-border);
+            margin-top: 0.5rem;
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .error-msg {
+            color: #ff7675;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-wrapper">
+        <div class="login-card glass-effect animate-fade">
+            <div class="logo" style="margin-bottom: 1rem;">IssaDilly</div>
+            <h1>Únete a nosotros</h1>
+            <form id="register-form" class="login-form">
+                <div class="form-group">
+                    <label>Nombre Completo</label>
+                    <input type="text" id="reg-name" placeholder="Tu nombre" required>
+                </div>
+                <div class="form-group" style="margin-top: 1.5rem;">
+                    <label>Email</label>
+                    <input type="email" id="reg-email" placeholder="tu@email.com" required>
+                </div>
+                <div class="form-group" style="margin-top: 1.5rem;">
+                    <label>Contraseña</label>
+                    <input type="password" id="reg-password" placeholder="••••••••" required>
+                </div>
+                <p id="reg-error" class="error-msg"></p>
+                <button type="submit" class="btn btn-primary"
+                    style="width: 100%; margin-top: 2rem;">Registrarse</button>
+            </form>
+            <div style="margin-top: 2rem;">
+                <a href="/login.html" style="font-size: 0.9rem; color: var(--text-muted);">¿Ya tienes cuenta? Inicia
+                    Sesión</a><br><br>
+                <a href="/" style="font-size: 0.9rem; color: var(--text-muted);">← Volver al sitio</a>
+            </div>
+        </div>
+    </div>
+    <script type="module">
+        const API_URL = 'http://localhost:3001/api';
+        document.getElementById('register-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('reg-name').value;
+            const email = document.getElementById('reg-email').value;
+            const password = document.getElementById('reg-password').value;
+            const errorMsg = document.getElementById('reg-error');
+
+            try {
+                const response = await fetch(`${API_URL}/auth/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, password })
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    alert('Registro exitoso. Ahora puedes iniciar sesión.');
+                    window.location.href = '/login.html';
+                } else {
+                    throw new Error(data.error);
+                }
+            } catch (err) {
+                errorMsg.textContent = err.message;
+                errorMsg.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+
+</html>

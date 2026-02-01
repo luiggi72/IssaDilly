@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Admin | IssaDilly</title>
+    <link rel="stylesheet" href="/src/style.css">
+    <style>
+        .admin-container {
+            padding-top: 120px;
+            max-width: 1000px;
+        }
+
+        .admin-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: var(--glass-shadow);
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-family: inherit;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 2rem;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .product-thumb {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-delete {
+            background: #ff7675;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .admin-nav {
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header id="main-header" class="glass-effect scrolled">
+        <nav class="container">
+            <div class="logo">IssaDilly Admin</div>
+            <ul class="nav-links">
+                <li><a href="/">Ver Sitio Web</a></li>
+                <li class="dropdown">
+                    <div style="display: flex; flex-direction: column; align-items: flex-end; margin-top: 8px;">
+                        <span
+                            style="font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px;">Administrador</span>
+                        <span id="admin-name-display" class="dropdown-trigger"
+                            style="font-weight: bold; color: var(--accent-gold); font-size: 0.95rem;">
+                            Cargando...
+                        </span>
+                    </div>
+                    <div class="dropdown-content">
+                        <a href="#" onclick="event.preventDefault(); switchTab('products')">Productos</a>
+                        <a href="#" onclick="event.preventDefault(); switchTab('users')">Usuarios</a>
+                        <a href="#" onclick="event.preventDefault(); switchTab('admins')">Administradores</a>
+                        <a href="#" onclick="event.preventDefault(); adminLogout()"
+                            style="border-top: 1px solid #eee; color: #e74c3c;">Salir</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <script type="module">
+        import { checkAuth } from '/src/auth.js';
+        checkAuth('admin');
+    </script>
+
+    <main class="container admin-container">
+        <!-- Title changes dynamically -->
+        <div class="admin-nav">
+            <h1 id="page-title">Gestión de Productos</h1>
+        </div>
+
+        <!-- PRODUCTS TAB -->
+        <div id="tab-products">
+            <section class="admin-card">
+                <h2>Añadir Nuevo Producto</h2>
+                <form id="product-form">
+                    <div class="form-group">
+                        <label>Nombre del Producto</label>
+                        <input type="text" id="p-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Precio ($)</label>
+                        <input type="number" id="p-price" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Categoría</label>
+                        <select id="p-category">
+                            <option value="Tortas">Tortas</option>
+                            <option value="Postres">Postres</option>
+                            <option value="Galletas">Galletas</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Descripción</label>
+                        <textarea id="p-desc" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Foto del Producto</label>
+                        <input type="file" id="p-image" accept="image/*" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Guardar Producto</button>
+                </form>
+            </section>
+
+            <section class="admin-card">
+                <h2>Productos Actuales</h2>
+                <table id="products-table">
+                    <thead>
+                        <tr>
+                            <th>Imagen</th>
+                            <th>Nombre</th>
+                            <th>Precio</th>
+                            <th>Categoría</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="products-list">
+                        <!-- Dynamic content -->
+                    </tbody>
+                </table>
+            </section>
+        </div>
+
+        <!-- USERS TAB -->
+        <div id="tab-users" style="display: none;">
+
+            <section class="admin-card">
+                <h2>Clientes Registrados</h2>
+                <table id="users-table">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th>Rol</th>
+                            <th>Móvil</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="users-list">
+                        <!-- Dynamic content -->
+                    </tbody>
+                </table>
+            </section>
+        </div>
+
+        <!-- ADMINS TAB -->
+        <div id="tab-admins" style="display: none;">
+            <section class="admin-card">
+                <h2>Añadir Nuevo Administrador</h2>
+                <form id="new-admin-form">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <input type="text" id="na-name" placeholder="Nombre" required class="form-control"
+                            style="padding: 0.8rem; border-radius: 10px; border: 1px solid #ddd;">
+                        <input type="text" id="na-lastname" placeholder="Apellidos" required class="form-control"
+                            style="padding: 0.8rem; border-radius: 10px; border: 1px solid #ddd;">
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+                        <input type="email" id="na-email" placeholder="Email" required class="form-control"
+                            style="padding: 0.8rem; border-radius: 10px; border: 1px solid #ddd;">
+                        <input type="password" id="na-password" placeholder="Contraseña" required class="form-control"
+                            style="padding: 0.8rem; border-radius: 10px; border: 1px solid #ddd;">
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="margin-top: 1rem;">Crear Administrador</button>
+                </form>
+            </section>
+
+            <section class="admin-card">
+                <h2>Administradores del Sistema</h2>
+                <table id="admins-table">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th>Rol</th>
+                            <th>Móvil</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admins-list">
+                        <!-- Dynamic content -->
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </main>
+
+    <script type="module" src="/src/admin.js"></script>
+</body>
+
+</html>

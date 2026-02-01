@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | IssaDilly Admin</title>
+    <link rel="stylesheet" href="/src/style.css">
+    <style>
+        .login-wrapper {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--bg-creme), var(--primary-pastel));
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 400px;
+            padding: 3rem;
+            border-radius: 40px;
+            text-align: center;
+        }
+
+        .login-card h1 {
+            margin-bottom: 2rem;
+            color: var(--accent-gold);
+        }
+
+        .login-form .form-group {
+            text-align: left;
+        }
+
+        .login-form input {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 15px;
+            border: 1px solid var(--glass-border);
+            margin-top: 0.5rem;
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .error-msg {
+            color: #ff7675;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-wrapper">
+        <div class="login-card glass-effect animate-fade">
+            <div class="logo" style="margin-bottom: 1rem;">IssaDilly</div>
+
+            <!-- Login Form -->
+            <div id="login-container">
+                <h1>Acceso</h1>
+                <form id="login-form" class="login-form">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="email" placeholder="email@ejemplo.com" required autocomplete="off">
+                    </div>
+                    <div class="form-group" style="margin-top: 1.5rem;">
+                        <label>Contraseña</label>
+                        <input type="password" id="password" placeholder="••••••••" required
+                            autocomplete="new-password">
+                    </div>
+                    <p id="login-error" class="error-msg">Credenciales incorrectas</p>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 2rem;">Entrar</button>
+                </form>
+                <div style="margin-top: 2rem;">
+                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">
+                        ¿No tienes cuenta? <a href="#" onclick="toggleAuthMode()"
+                            style="color: var(--accent-gold); font-weight: bold;">Regístrate aquí</a>
+                    </p>
+                    <a href="/" style="font-size: 0.9rem; color: var(--text-muted);">← Volver al sitio</a>
+                </div>
+            </div>
+
+            <!-- Register Form (Hidden by default) -->
+            <div id="register-container" style="display: none;">
+                <h1>Crear Cuenta</h1>
+                <form id="register-form" class="login-form">
+                    <div class="form-group">
+                        <label>Nombre Completo</label>
+                        <input type="text" id="reg-name" placeholder="Tu nombre" required autocomplete="off">
+                    </div>
+                    <div class="form-group" style="margin-top: 1.5rem;">
+                        <label>Email</label>
+                        <input type="email" id="reg-email" placeholder="tu@email.com" required autocomplete="off">
+                    </div>
+                    <div class="form-group" style="margin-top: 1.5rem;">
+                        <label>Contraseña</label>
+                        <input type="password" id="reg-password" placeholder="••••••••" required
+                            autocomplete="new-password">
+                    </div>
+                    <p id="reg-error" class="error-msg"></p>
+                    <button type="submit" class="btn btn-primary"
+                        style="width: 100%; margin-top: 2rem;">Registrarse</button>
+                </form>
+                <div style="margin-top: 2rem;">
+                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">
+                        ¿Ya tienes cuenta? <a href="#" onclick="toggleAuthMode()"
+                            style="color: var(--accent-gold); font-weight: bold;">Inicia Sesión</a>
+                    </p>
+                    <a href="/" style="font-size: 0.9rem; color: var(--text-muted);">← Volver al sitio</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script type="module">
+        import { login } from '/src/auth.js';
+        const API_URL = 'http://localhost:3001/api';
+
+        // Toggle Logic
+        window.toggleAuthMode = () => {
+            const loginContainer = document.getElementById('login-container');
+            const registerContainer = document.getElementById('register-container');
+            const errorMsgs = document.querySelectorAll('.error-msg');
+
+            // Clear inputs and errors on toggle
+            document.querySelectorAll('input').forEach(input => input.value = '');
+            errorMsgs.forEach(msg => msg.style.display = 'none');
+
+            if (loginContainer.style.display === 'none') {
+                loginContainer.style.display = 'block';
+                registerContainer.style.display = 'none';
+                document.title = 'Login | IssaDilly';
+            } else {
+                loginContainer.style.display = 'none';
+                registerContainer.style.display = 'block';
+                document.title = 'Registro | IssaDilly';
+            }
+        };
+
+        // Clear forms on load
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('input').forEach(input => input.value = '');
+        });
+
+        // Handle Login
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorMsg = document.getElementById('login-error');
+
+            try {
+                await login(email, password);
+            } catch (err) {
+                errorMsg.textContent = err.message || 'Credenciales incorrectas';
+                errorMsg.style.display = 'block';
+            }
+        });
+
+        // Handle Register
+        document.getElementById('register-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('reg-name').value;
+            const email = document.getElementById('reg-email').value;
+            const password = document.getElementById('reg-password').value;
+            const errorMsg = document.getElementById('reg-error');
+
+            try {
+                const response = await fetch(`${API_URL}/auth/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, password })
+                });
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('Registro exitoso. Iniciando sesión...');
+                    // Auto login after register
+                    await login(email, password);
+                } else {
+                    throw new Error(data.error);
+                }
+            } catch (err) {
+                errorMsg.textContent = err.message || 'Error al registrarse';
+                errorMsg.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+
+</html>

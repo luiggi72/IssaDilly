@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil | IssaDilly</title>
+    <link rel="stylesheet" href="/src/style.css">
+    <style>
+        .profile-container {
+            max-width: 900px;
+            margin: 8rem auto 4rem;
+            display: block;
+            /* Force block in case of flex/grid artifacts */
+        }
+
+        /* Sidebar removed styles... */
+
+        .profile-content {
+            padding: 3rem;
+            border-radius: 40px;
+            min-height: 500px;
+        }
+
+        .section-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .section-content.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 15px;
+            border: 1px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.5);
+        }
+    </style>
+</head>
+
+<body>
+    <header id="main-header" class="glass-effect scrolled">
+        <!-- Rendered by header.js -->
+    </header>
+
+    <div class="container profile-container">
+        <!-- Sidebar removed as per request -->
+
+        <main class="profile-content glass-effect">
+            <!-- SECTION: ADDRESS -->
+            <!-- SECTION: PERSONAL DATA -->
+            <div id="section-personal" class="section-content">
+                <h2 style="color: var(--accent-gold); margin-bottom: 2rem;">Datos Personales</h2>
+                <form id="personal-form">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label>Nombre(s)</label>
+                            <input type="text" id="personal-name" placeholder="Tu nombre" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Apellido(s)</label>
+                            <input type="text" id="personal-lastname" placeholder="Tus apellidos" required>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label>Teléfono Celular</label>
+                            <input type="tel" id="personal-mobile" placeholder="55 1234 5678" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Teléfono Fijo</label>
+                            <input type="tel" id="personal-landline" placeholder="55 1234 5678">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="personal-email" disabled
+                            style="background: rgba(0,0,0,0.05); cursor: not-allowed;">
+                        <small style="color: var(--text-muted);">El email no se puede cambiar.</small>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Guardar Datos
+                        Personales</button>
+                </form>
+            </div>
+
+            <!-- SECTION: ADDRESS -->
+            <div id="section-address" class="section-content">
+                <h2 style="color: var(--accent-gold); margin-bottom: 2rem;">Mi Dirección</h2>
+                <form id="profile-form">
+
+                    <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label>Calle</label>
+                            <input type="text" id="street" placeholder="Av. Principal" required>
+                        </div>
+                        <div class="form-group">
+                            <label>No. Ext</label>
+                            <input type="text" id="exterior" placeholder="123" required>
+                        </div>
+                        <div class="form-group">
+                            <label>No. Int</label>
+                            <input type="text" id="interior" placeholder="Apt 2">
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label>Colonia</label>
+                            <input type="text" id="neighborhood" placeholder="Colonia Centro" required>
+                        </div>
+                        <div class="form-group">
+                            <label>CP</label>
+                            <input type="text" id="zip" placeholder="00000" required>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label>Ciudad / Municipio</label>
+                            <input type="text" id="city" placeholder="Ciudad" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Alcaldía / Delegación</label>
+                            <input type="text" id="delegation" placeholder="Delegación">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Estado</label>
+                        <input type="text" id="state" placeholder="Estado" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Guardar
+                        Dirección</button>
+                </form>
+            </div>
+
+            <!-- SECTION: PAYMENT -->
+            <div id="section-payment" class="section-content">
+                <h2 style="color: var(--accent-gold); margin-bottom: 2rem;">Métodos de Pago</h2>
+                <form id="payment-form">
+                    <div class="form-group">
+                        <label>Forma de Pago Preferida</label>
+                        <select id="payment-method">
+                            <option value="card">Tarjeta de Crédito/Débito</option>
+                            <option value="paypal">PayPal</option>
+                            <option value="cash">Efectivo contra entrega</option>
+                        </select>
+                    </div>
+                    <!-- Mock Card Fields -->
+                    <div id="card-details">
+                        <div class="form-group">
+                            <label>Número de Tarjeta (Simulado)</label>
+                            <input type="text" placeholder="**** **** **** ****">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Guardar Método</button>
+                </form>
+            </div>
+
+            <!-- SECTION: SECURITY -->
+            <div id="section-security" class="section-content">
+                <h2 style="color: var(--accent-gold); margin-bottom: 2rem;">Seguridad</h2>
+                <form onsubmit="event.preventDefault(); alert('Contraseña actualizada (Simulación)');">
+                    <div class="form-group">
+                        <label>Contraseña Actual</label>
+                        <input type="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Nueva Contraseña</label>
+                        <input type="password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Actualizar Contraseña</button>
+                </form>
+            </div>
+
+            <!-- SECTION: INVOICES -->
+            <div id="section-invoices" class="section-content">
+                <h2 style="color: var(--accent-gold); margin-bottom: 2rem;">Mis Facturas</h2>
+                <p style="text-align: center; color: var(--text-muted); margin-top: 3rem;">No tienes facturas generadas
+                    aún.</p>
+            </div>
+
+            <!-- SECTION: HISTORY -->
+            <div id="section-history" class="section-content">
+                <h2 style="color: var(--accent-gold); margin-bottom: 2rem;">Historial de Pedidos</h2>
+                <p style="text-align: center; color: var(--text-muted); margin-top: 3rem;">Aún no has realizado ningún
+                    pedido delicioso.</p>
+            </div>
+        </main>
+    </div>
+
+    <div id="cart-modal" class="modal"></div>
+
+    <script type="module">
+        import { renderHeader } from '/src/header.js';
+        import { Cart } from '/src/cart.js';
+
+        const API_URL = 'http://localhost:3001/api';
+
+        // ... existing tab logic ...
+        window.showSection = (sectionId) => {
+            // Hide all
+            document.querySelectorAll('.section-content').forEach(el => el.classList.remove('active'));
+
+            // Show target
+            const section = document.getElementById(`section-${sectionId}`);
+            if (section) {
+                section.classList.add('active');
+                // Update URL hash without scroll
+                history.pushState(null, null, `#${sectionId}`);
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderHeader();
+            Cart.init();
+
+            const user = JSON.parse(localStorage.getItem('issadilly_user'));
+            const token = localStorage.getItem('issadilly_token');
+
+            if (!user || !token) {
+                window.location.href = '/login.html';
+                return;
+            }
+
+            // Initialize view based on hash
+            const hash = window.location.hash.substring(1) || 'personal';
+            showSection(hash);
+
+            // Listen for menu clicks (hash changes)
+            window.addEventListener('hashchange', () => {
+                const newHash = window.location.hash.substring(1);
+                if (newHash) showSection(newHash);
+            });
+
+            // --- POPULATE FORMS ---
+
+            // Personal Data Form
+            const safeValue = (val) => val || '';
+            document.getElementById('personal-name').value = safeValue(user.name);
+            document.getElementById('personal-lastname').value = safeValue(user.lastname);
+            document.getElementById('personal-mobile').value = safeValue(user.phone_mobile);
+            document.getElementById('personal-landline').value = safeValue(user.phone_landline);
+            document.getElementById('personal-email').value = safeValue(user.email);
+
+            // Address Form
+            document.getElementById('street').value = safeValue(user.street);
+            document.getElementById('exterior').value = safeValue(user.exterior);
+            document.getElementById('interior').value = safeValue(user.interior);
+            document.getElementById('neighborhood').value = safeValue(user.neighborhood);
+            document.getElementById('zip').value = safeValue(user.zip);
+            document.getElementById('city').value = safeValue(user.city);
+            document.getElementById('delegation').value = safeValue(user.delegation);
+            document.getElementById('state').value = safeValue(user.state);
+
+            // Payment Form
+            if (user.payment_method) {
+                document.getElementById('payment-method').value = user.payment_method;
+            }
+
+            // --- HANDLE SUBMITS ---
+
+            // 0. Update Personal Data
+            document.getElementById('personal-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const currentUser = JSON.parse(localStorage.getItem('issadilly_user'));
+
+                const profileData = {
+                    ...currentUser,
+                    name: document.getElementById('personal-name').value,
+                    lastname: document.getElementById('personal-lastname').value,
+                    phone_mobile: document.getElementById('personal-mobile').value,
+                    phone_landline: document.getElementById('personal-landline').value
+                };
+
+                updateProfile(profileData);
+            });
+
+            // 1. Update Address
+            document.getElementById('profile-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                // Read current user state again to ensure we don't overwrite other fields with stale data
+                const currentUser = JSON.parse(localStorage.getItem('issadilly_user'));
+
+                const profileData = {
+                    ...currentUser, // Preserve phone, payment_method, etc.
+                    street: document.getElementById('street').value,
+                    exterior: document.getElementById('exterior').value,
+                    interior: document.getElementById('interior').value,
+                    neighborhood: document.getElementById('neighborhood').value,
+                    zip: document.getElementById('zip').value,
+                    city: document.getElementById('city').value,
+                    delegation: document.getElementById('delegation').value,
+                    state: document.getElementById('state').value
+                };
+
+                updateProfile(profileData);
+            });
+
+            // 2. Update Payment
+            document.getElementById('payment-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const currentUser = JSON.parse(localStorage.getItem('issadilly_user'));
+
+                const profileData = {
+                    ...currentUser, // Preserve address info, phone, etc.
+                    payment_method: document.getElementById('payment-method').value
+                };
+
+                updateProfile(profileData);
+            });
+
+            async function updateProfile(data) {
+                // Clean data before sending (remove properties not in the update list if needed, 
+                // but our endpoint destructures what it needs, so extra props are ignored usually. 
+                // Just to be safe/clean:)
+                // sending everything is fine as long as keys match what backend expects.
+
+                try {
+                    const response = await fetch(`${API_URL}/auth/profile`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    const resData = await response.json();
+                    if (response.ok) {
+                        localStorage.setItem('issadilly_user', JSON.stringify(resData.user));
+                        alert('Perfil actualizado correctamente');
+                    } else {
+                        alert('Error al guardar datos: ' + (resData.error || 'Desconocido'));
+                    }
+                } catch (err) {
+                    console.error(err);
+                    alert('Error de conexión al guardar el perfil.');
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
