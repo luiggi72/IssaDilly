@@ -164,7 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.adminLogout = () => {
         localStorage.removeItem('issadilly_token');
         localStorage.removeItem('issadilly_user');
-        window.location.href = '/login.html';
+        window.location.href = 'login.html';
     };
 });
 
