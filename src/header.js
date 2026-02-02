@@ -10,20 +10,20 @@ export function renderHeader() {
       <li class="dropdown">
         <span class="dropdown-trigger">Hola, ${user.name.split(' ')[0]}</span>
         <div class="dropdown-content">
-          <a href="/profile.html#personal" style="font-weight: bold; color: var(--accent-gold);">Mi Perfil</a>
-          <a href="/profile.html#address">Mi Dirección</a>
-          <a href="/profile.html#payment">Métodos de Pago</a>
-          <a href="/profile.html#invoices">Facturas</a>
-          <a href="/profile.html#history">Historial</a>
-          <a href="/profile.html#security">Seguridad</a>
-          ${user.role === 'admin' ? '<a href="/admin.html" style="color: var(--accent-gold); font-weight: bold;">Panel Admin</a>' : ''}
+          <a href="profile.html#personal" style="font-weight: bold; color: var(--accent-gold);">Mi Perfil</a>
+          <a href="profile.html#address">Mi Dirección</a>
+          <a href="profile.html#payment">Métodos de Pago</a>
+          <a href="profile.html#invoices">Facturas</a>
+          <a href="profile.html#history">Historial</a>
+          <a href="profile.html#security">Seguridad</a>
+          ${user.role === 'admin' ? '<a href="admin.html" style="color: var(--accent-gold); font-weight: bold;">Panel Admin</a>' : ''}
           <a href="#" onclick="logout()" style="border-top: 1px solid var(--glass-border); color: #e74c3c;">Salir</a>
         </div>
       </li>
     `;
   } else {
     authLinks = `
-      <li><a href="/login.html">Acceder / Registro</a></li>
+      <li><a href="login.html">Acceder / Registro</a></li>
     `;
   }
 
@@ -36,9 +36,9 @@ export function renderHeader() {
 
       <div class="nav-wrapper" id="nav-wrapper">
         <ul class="nav-links main-nav">
-          <li><a href="/#hero" onclick="closeMobileMenu()">Inicio</a></li>
-          <li><a href="/#products" onclick="closeMobileMenu()">Productos</a></li>
-          <li><a href="/#about" onclick="closeMobileMenu()">Nosotros</a></li>
+          <li><a href="index.html#hero" onclick="closeMobileMenu()">Inicio</a></li>
+          <li><a href="index.html#products" onclick="closeMobileMenu()">Productos</a></li>
+          <li><a href="index.html#about" onclick="closeMobileMenu()">Nosotros</a></li>
         </ul>
         <ul class="nav-links auth-nav">
           ${authLinks}

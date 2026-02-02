@@ -11,7 +11,7 @@ export async function login(email, password) {
     if (response.ok) {
         localStorage.setItem('issadilly_token', data.token);
         localStorage.setItem('issadilly_user', JSON.stringify(data.user));
-        window.location.href = data.user.role === 'admin' ? '/admin.html' : '/';
+        window.location.href = data.user.role === 'admin' ? 'admin.html' : 'index.html';
     } else {
         throw new Error(data.error);
     }
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
 export async function checkAuth(requiredRole = null) {
     const token = localStorage.getItem('issadilly_token');
     if (!token) {
-        window.location.href = '/login.html';
+        window.location.href = 'login.html';
         return;
     }
 
@@ -38,18 +38,18 @@ export async function checkAuth(requiredRole = null) {
 
         const user = await response.json();
         if (requiredRole && user.role !== requiredRole) {
-            window.location.href = '/';
+            window.location.href = 'index.html';
         }
     } catch (err) {
         localStorage.removeItem('issadilly_token');
-        window.location.href = '/login.html';
+        window.location.href = 'login.html';
     }
 }
 
 export function logout() {
     localStorage.removeItem('issadilly_token');
     localStorage.removeItem('issadilly_user');
-    window.location.href = '/login.html';
+    window.location.href = 'login.html';
 }
 
 window.adminLogout = logout;
